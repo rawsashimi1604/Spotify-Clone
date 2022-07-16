@@ -9,7 +9,8 @@ function Login({ providers }) {
         return (
           <div key={provider.name}>
             <button 
-              className="bg-[#18d860] text-white p-5 rounded-full"
+              className="text-white p-5 rounded-full duration-100 ease-in hover:opacity-70"
+              style={{backgroundColor: "#18d860"}}
               onClick={() => signIn(provider.id, { callbackUrl: "/" })}
             >Login with {provider.name}</button>
           </div>
