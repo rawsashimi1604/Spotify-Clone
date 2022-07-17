@@ -24,7 +24,7 @@ function Song({ order, track }) {
       onClick={playSong}
     >
       <div className='flex items-center space-x-4 '>
-        <p>{order + 1}</p>
+        <p className='w-4 min-w-4 text-right'>{order + 1}</p>
         <img className="h-10 w-10" src={track.track.album.images?.[0]?.url}/>
         <div>
           <p className='w-36 lg:w-64 truncate text-white'>{track.track.name}</p>

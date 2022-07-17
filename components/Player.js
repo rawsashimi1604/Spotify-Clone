@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRecoilState } from "recoil"
 import { currentTrackIdState, isPlayingState } from '../atoms/songAtom' 
 import { useSession } from 'next-auth/react'
 import useSpotify from '../hooks/useSpotify'
 import useSongInfo from '../hooks/useSongInfo'
-import { ReplyIcon, SwitchHorizontalIcon } from '@heroicons/react/outline'
-import { RewindIcon, PlayIcon, PauseIcon, FastForwardIcon, } from "@heroicons/react/solid"
+import { ReplyIcon, SwitchHorizontalIcon, VolumeOffIcon } from '@heroicons/react/outline'
+import { RewindIcon, PlayIcon, PauseIcon, FastForwardIcon, VolumeUpIcon, } from "@heroicons/react/solid"
+import { debounce } from 'lodash'
 
 
 function Player() {
@@ -55,6 +56,19 @@ function Player() {
     })
   }
 
+  useEffect(() => {
+    if (volume >= 0 && volume <= 100) {
+      debounceAdjustVolume(volume);
+    }
+  }, [volume]);
+
+  const debounceAdjustVolume = useCallback(
+    debounce((volume) => {
+      spotifyApi.setVolume(volume).catch(err => {});
+    }, 500),
+    []
+  )
+
   return (
     <div className='grid grid-cols-3 text-xs md:text-base px-2 md:px-8 h-24 bg-gradient-to-b from-black to-gray-900 text-white'>
       
@@ -81,7 +95,24 @@ function Player() {
         <FastForwardIcon className='button' />
 
         <ReplyIcon className='button'/>
+      </div>
 
+      {/* Right */}
+      <div className='flex items-center space-x-3 md:space-x-4 justify-end pr-5'>
+        
+        {volume === 0 ? 
+          <VolumeOffIcon onClick={() => setVolume(DEFAULT_VOLUME)} className='button'/> : 
+          <VolumeUpIcon onClick={() => setVolume(0)} className="button"/> 
+        }
+        
+        <input 
+          type="range"
+          min={0} 
+          max={100} 
+          value={volume}
+          className="w-14 md:w-28"
+          onChange={e => setVolume(Number(e.target.value))}
+        />
       </div>
     </div>
   )
