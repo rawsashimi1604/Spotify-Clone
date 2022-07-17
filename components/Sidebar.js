@@ -13,7 +13,7 @@ function Sidebar() {
   const { data: session, status } = useSession();
 
   return (
-    <div className="text-gray-500 p-5 text-sm border-r border-gray-900">
+    <aside className="text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll h-screen scrollbar-hide">
 
       <div className="space-y-4">
         <button 
@@ -68,7 +68,7 @@ function Sidebar() {
         
       </div>
 
-    </div>
+    </aside>
   )
 }
 
