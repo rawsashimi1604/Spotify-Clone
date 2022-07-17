@@ -1,7 +1,7 @@
-import { getSession } from "next-auth/react"
-import Center from "../components/Center"
-import Sidebar from "../components/Sidebar"
-import Player from "../components/Player"
+import { getSession } from "next-auth/react";
+import Center from "../components/Center";
+import Sidebar from "../components/Sidebar";
+import Player from "../components/Player";
 
 export default function Home() {
   return (
@@ -15,7 +15,7 @@ export default function Home() {
         <Player />
       </div>
     </div>
-  )
+  );
 }
 
 // Pre rendering the user on the server before it gets to the client
@@ -24,7 +24,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      session
-    }
-  }
+      session,
+    },
+  };
 }
