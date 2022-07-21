@@ -17,7 +17,9 @@ import {
   VolumeUpIcon,
 } from "@heroicons/react/solid";
 import { debounce } from "lodash";
-import { data } from "autoprefixer";
+import { millisToMinutesAndSeconds } from "../lib/time";
+import { setInterval } from "timers";
+import TimeElapsedBar from "./TimeElapsedBar";
 
 function Player() {
   const DEFAULT_VOLUME = 50;
@@ -28,8 +30,11 @@ function Player() {
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
+  
 
   const songInfo = useSongInfo();
+
+  
 
   // If there is no song information present, fetch the currently playing song.
   function fetchCurrentSong() {
@@ -70,6 +75,7 @@ function Player() {
   // Debounce get current playing track as some time is needed to update current playing track from Spotify's API server side
   const debouncedGetCurrentPlayingTrack = debounce(() => {
     spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+      console.log(data)
       setCurrentTrackId(data.body?.item?.id);
     })
   }, parseInt(process.env.DEBOUNCE_RESPONSE_TIME))
@@ -94,18 +100,21 @@ function Player() {
     }) 
   }
 
-  useEffect(() => {
-    if (volume >= 0 && volume <= 100) {
-      debounceAdjustVolume(volume);
-    }
-  }, [volume]);
-
+  // Debounce setVolume API Call to prevent from excessively abusing api call.
   const debounceAdjustVolume = useCallback(
     debounce((volume) => {  
       spotifyApi.setVolume(volume).catch((err) => {});
     }, parseInt(process.env.DEBOUNCE_RESPONSE_TIME)),
     []
   );
+
+  useEffect(() => {
+    if (volume >= 0 && volume <= 100) {
+      debounceAdjustVolume(volume);
+    }
+  }, [volume]);
+
+  
 
   return (
     <div className="grid grid-cols-3 text-xs md:text-base px-2 md:px-8 h-24 bg-gradient-to-b from-black to-gray-900 text-white">
@@ -124,32 +133,38 @@ function Player() {
       </div>
 
       {/* Center */}
-      <div className="flex items-center justify-center space-x-4 md:space-x-6 lg:space-x-8">
-        <SwitchHorizontalIcon className="button" />
-        
-        <RewindIcon
-          onClick={handlePreviousTrack} 
-          className="button" 
-        />
-
-        {isPlaying ? (
-          <PauseIcon 
-            onClick={handlePlayPause} 
-            className="button w-10 h-10" 
+      <div className="flex flex-col space-y-2 justify-center">
+        {/* Buttons */}
+        <div className="flex items-center justify-center space-x-4 md:space-x-6 lg:space-x-8">
+          <SwitchHorizontalIcon className="button" />
+          
+          <RewindIcon
+            onClick={handlePreviousTrack} 
+            className="button" 
           />
-        ) : (
-          <PlayIcon 
-            onClick={handlePlayPause} 
-            className="button w-10 h-10" 
+
+          {isPlaying ? (
+            <PauseIcon 
+              onClick={handlePlayPause} 
+              className="button w-10 h-10" 
+            />
+          ) : (
+            <PlayIcon 
+              onClick={handlePlayPause} 
+              className="button w-10 h-10" 
+            />
+          )}
+
+          <FastForwardIcon 
+            onClick={handleNextTrack} 
+            className="button" 
           />
-        )}
 
-        <FastForwardIcon 
-          onClick={handleNextTrack} 
-          className="button" 
-        />
+          <ReplyIcon className="button" />
+        </div>
 
-        <ReplyIcon className="button" />
+        {/* Timestamp */}
+        <TimeElapsedBar songInfo={songInfo} />
       </div>
 
       {/* Right */}
