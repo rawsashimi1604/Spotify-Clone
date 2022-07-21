@@ -72,7 +72,7 @@ function Player() {
     spotifyApi.getMyCurrentPlayingTrack().then((data) => {
       setCurrentTrackId(data.body?.item?.id);
     })
-  }, 500)
+  }, parseInt(process.env.DEBOUNCE_RESPONSE_TIME))
 
   function handleNextTrack() {
     spotifyApi.skipToNext().then(res => {
@@ -103,7 +103,7 @@ function Player() {
   const debounceAdjustVolume = useCallback(
     debounce((volume) => {  
       spotifyApi.setVolume(volume).catch((err) => {});
-    }, 500),
+    }, parseInt(process.env.DEBOUNCE_RESPONSE_TIME)),
     []
   );
 
