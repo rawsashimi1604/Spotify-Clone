@@ -133,8 +133,8 @@ function Player() {
       {/* Center */}
       <div className="flex flex-col space-y-2 justify-center">
         {/* Buttons */}
-        <div className="flex items-center justify-center space-x-4 md:space-x-6 lg:space-x-8">
-          <SwitchHorizontalIcon className="button" />
+        <div className="flex items-center justify-between md:justify-center md:space-x-4 md:space-x-6 lg:space-x-8">
+          {/* <SwitchHorizontalIcon className="button" /> */}
 
           <RewindIcon onClick={handlePreviousTrack} className="button" />
 
@@ -146,7 +146,7 @@ function Player() {
 
           <FastForwardIcon onClick={handleNextTrack} className="button" />
 
-          <ReplyIcon className="button" />
+          {/* <ReplyIcon className="button" /> */}
         </div>
 
         {/* Timestamp */}
