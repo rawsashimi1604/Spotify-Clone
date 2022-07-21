@@ -30,11 +30,9 @@ function Player() {
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
-  
 
   const songInfo = useSongInfo();
 
-  
 
   // If there is no song information present, fetch the currently playing song.
   function fetchCurrentSong() {
@@ -60,11 +58,6 @@ function Player() {
     }
   }, [currentTrackId, spotifyApi, session]);
 
-  useEffect(() => {
-    console.log(currentTrackId);
-    console.log("updated")
-  }, [currentTrackId])
-
   function handlePlayPause() {
     spotifyApi.getMyCurrentPlaybackState().then((data) => {
       if (data.body.is_playing) {
@@ -80,15 +73,12 @@ function Player() {
   // Debounce get current playing track as some time is needed to update current playing track from Spotify's API server side
   const debouncedGetCurrentPlayingTrack = debounce(() => {
     spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-      console.log("DEBOUNCE RAN")
-      console.log(data)
       setCurrentTrackId(data.body?.item?.id);
     })
   }, 500)
 
   function handleNextTrack() {
     spotifyApi.skipToNext().then(res => {
-      console.log("skipped!")
       debouncedGetCurrentPlayingTrack();
       setIsPlaying(true)
     }).catch(err => {
@@ -98,7 +88,6 @@ function Player() {
 
   function handlePreviousTrack() {
     spotifyApi.skipToPrevious().then(res => {
-      console.log("skipped!")
       debouncedGetCurrentPlayingTrack();
       setIsPlaying(true)
     }).catch(err => {

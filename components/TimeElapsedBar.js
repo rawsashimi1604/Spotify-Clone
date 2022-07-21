@@ -15,6 +15,7 @@ function TimeElapsedBar({ songInfo }) {
   useEffect(() => {
     if (currentTrackId && isPlaying) {
       const interval = setInterval(() => {
+        // Spotify API rate limiting issues,
         // spotifyApi.getMyCurrentPlayingTrack().then((data) => {
         //   setTimeElapsed(data.body?.progress_ms);
         // })
@@ -25,7 +26,7 @@ function TimeElapsedBar({ songInfo }) {
   })
 
   function getTimeElapsedPrc() {
-    return timeElapsed / songDuration * 100;
+    return timeElapsed / songDuration * 100 || 1;
   }
 
   return (
