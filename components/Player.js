@@ -17,6 +17,7 @@ import {
   VolumeUpIcon,
 } from "@heroicons/react/solid";
 import { debounce } from "lodash";
+import { data } from "autoprefixer";
 
 function Player() {
   const DEFAULT_VOLUME = 50;
@@ -30,8 +31,10 @@ function Player() {
 
   const songInfo = useSongInfo();
 
+  // If there is no song information present, fetch the currently playing song.
   function fetchCurrentSong() {
     if (!songInfo) {
+      console.log("fetched current song!")
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
         console.log("now playing: " + data.body?.item);
         setCurrentTrackId(data.body?.item?.id);
@@ -43,13 +46,14 @@ function Player() {
     }
   }
 
+  // Initial load up...
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
       // Fetch the song info...
       fetchCurrentSong();
       setVolume(DEFAULT_VOLUME);
     }
-  }, [currentTrackIdState, spotifyApi, session]);
+  }, [currentTrackId, spotifyApi, session]);
 
   function handlePlayPause() {
     spotifyApi.getMyCurrentPlaybackState().then((data) => {
@@ -63,6 +67,34 @@ function Player() {
     });
   }
 
+  // Debounce get current playing track as some time is needed to update current playing track from Spotify's API server side
+  const debouncedGetCurrentPlayingTrack = debounce(() => {
+    spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+      console.log("ran")
+      const id = data.body?.item?.id;
+      console.log(id)
+      setCurrentTrackId(id);
+    })
+  }, 500)
+
+  function handleNextTrack() {
+    spotifyApi.skipToNext().then(res => {
+      console.log("skipped!")
+      debouncedGetCurrentPlayingTrack();
+    }).catch(err => {
+      console.log("Could not handle next track.")
+    }) 
+  }
+
+  function handlePreviousTrack() {
+    spotifyApi.skipToPrevious().then(res => {
+      console.log("skipped!")
+      debouncedGetCurrentPlayingTrack();
+    }).catch(err => {
+      console.log("Could not handle previous track.")
+    }) 
+  }
+
   useEffect(() => {
     if (volume >= 0 && volume <= 100) {
       debounceAdjustVolume(volume);
@@ -70,7 +102,7 @@ function Player() {
   }, [volume]);
 
   const debounceAdjustVolume = useCallback(
-    debounce((volume) => {
+    debounce((volume) => {  
       spotifyApi.setVolume(volume).catch((err) => {});
     }, 500),
     []
@@ -95,15 +127,28 @@ function Player() {
       {/* Center */}
       <div className="flex items-center justify-evenly">
         <SwitchHorizontalIcon className="button" />
-        <RewindIcon className="button" />
+        
+        <RewindIcon
+          onClick={handlePreviousTrack} 
+          className="button" 
+        />
 
         {isPlaying ? (
-          <PauseIcon onClick={handlePlayPause} className="button w-10 h-10" />
+          <PauseIcon 
+            onClick={handlePlayPause} 
+            className="button w-10 h-10" 
+          />
         ) : (
-          <PlayIcon onClick={handlePlayPause} className="button w-10 h-10" />
+          <PlayIcon 
+            onClick={handlePlayPause} 
+            className="button w-10 h-10" 
+          />
         )}
 
-        <FastForwardIcon className="button" />
+        <FastForwardIcon 
+          onClick={handleNextTrack} 
+          className="button" 
+        />
 
         <ReplyIcon className="button" />
       </div>
