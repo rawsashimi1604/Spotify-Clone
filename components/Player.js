@@ -60,6 +60,11 @@ function Player() {
     }
   }, [currentTrackId, spotifyApi, session]);
 
+  useEffect(() => {
+    console.log(currentTrackId);
+    console.log("updated")
+  }, [currentTrackId])
+
   function handlePlayPause() {
     spotifyApi.getMyCurrentPlaybackState().then((data) => {
       if (data.body.is_playing) {
@@ -75,10 +80,11 @@ function Player() {
   // Debounce get current playing track as some time is needed to update current playing track from Spotify's API server side
   const debouncedGetCurrentPlayingTrack = debounce(() => {
     spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+      console.log("DEBOUNCE RAN")
       console.log(data)
       setCurrentTrackId(data.body?.item?.id);
     })
-  }, parseInt(process.env.DEBOUNCE_RESPONSE_TIME))
+  }, 500)
 
   function handleNextTrack() {
     spotifyApi.skipToNext().then(res => {
@@ -104,7 +110,7 @@ function Player() {
   const debounceAdjustVolume = useCallback(
     debounce((volume) => {  
       spotifyApi.setVolume(volume).catch((err) => {});
-    }, parseInt(process.env.DEBOUNCE_RESPONSE_TIME)),
+    }, parseInt(500)),
     []
   );
 

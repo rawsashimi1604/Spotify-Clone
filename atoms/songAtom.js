@@ -9,3 +9,8 @@ export const isPlayingState = atom({
   key: "isPlayingState",
   default: false,
 });
+
+export const trackElapsedTimeState = atom({
+  key: "trackElapsedTimeState",
+  default: 0,
+})

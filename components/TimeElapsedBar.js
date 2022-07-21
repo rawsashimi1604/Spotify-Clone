@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilState } from "recoil";
-import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
+import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../atoms/songAtom";
 import { millisToMinutesAndSeconds } from '../lib/time';
 
 function TimeElapsedBar({ songInfo }) {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-  const [timeElapsed, setTimeElapsed] = useState(0)
-
+  const [timeElapsed, setTimeElapsed] = useRecoilState(trackElapsedTimeState)
+  
   // TIMER to update time elapsed playing the song...
   useEffect(() => {
     if (currentTrackId && isPlaying) {
-      console.log("updating ELAPSED TIME...")
       const interval = setInterval(() => {
-        console.log("ran")
         // spotifyApi.getMyCurrentPlayingTrack().then((data) => {
         //   setTimeElapsed(data.body?.progress_ms);
         // })
