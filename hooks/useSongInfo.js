@@ -18,7 +18,6 @@ function useSongInfo() {
   useEffect(() => {
     const fetchSongInfo = async () => {
       if (currentTrackId) {
-        console.log("song info is updating...");
         const trackInfo = await fetch(
           `https://api.spotify.com/v1/tracks/${currentTrackId}`,
           {
