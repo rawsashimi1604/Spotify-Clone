@@ -13,4 +13,4 @@ export const isPlayingState = atom({
 export const trackElapsedTimeState = atom({
   key: "trackElapsedTimeState",
   default: 0,
-})
+});

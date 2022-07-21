@@ -21,7 +21,7 @@ function Song({ order, track }) {
       offset: {
         position: order,
       },
-      position_ms: 0
+      position_ms: 0,
     });
   }
 

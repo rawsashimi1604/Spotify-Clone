@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import useSpotify from "./useSpotify";
 import { useRecoilState } from "recoil";
-import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../atoms/songAtom";
+import {
+  currentTrackIdState,
+  isPlayingState,
+  trackElapsedTimeState,
+} from "../atoms/songAtom";
 
 function useSongInfo() {
   const spotifyApi = useSpotify();
@@ -9,12 +13,12 @@ function useSongInfo() {
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [songInfo, setSongInfo] = useState(null);
-  const [timeElapsed, setTimeElapsed] = useRecoilState(trackElapsedTimeState)
+  const [timeElapsed, setTimeElapsed] = useRecoilState(trackElapsedTimeState);
 
   useEffect(() => {
     const fetchSongInfo = async () => {
       if (currentTrackId) {
-        console.log("song info is updating...")
+        console.log("song info is updating...");
         const trackInfo = await fetch(
           `https://api.spotify.com/v1/tracks/${currentTrackId}`,
           {
@@ -23,7 +27,7 @@ function useSongInfo() {
             },
           }
         ).then((res) => res.json());
-        
+
         setTimeElapsed(0);
         setSongInfo(trackInfo);
       }

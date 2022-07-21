@@ -33,11 +33,10 @@ function Player() {
 
   const songInfo = useSongInfo();
 
-
   // If there is no song information present, fetch the currently playing song.
   function fetchCurrentSong() {
     if (!songInfo) {
-      console.log("fetched current song!")
+      console.log("fetched current song!");
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
         console.log("now playing: " + data.body?.item);
         setCurrentTrackId(data.body?.item?.id);
@@ -74,30 +73,36 @@ function Player() {
   const debouncedGetCurrentPlayingTrack = debounce(() => {
     spotifyApi.getMyCurrentPlayingTrack().then((data) => {
       setCurrentTrackId(data.body?.item?.id);
-    })
-  }, 500)
+    });
+  }, 500);
 
   function handleNextTrack() {
-    spotifyApi.skipToNext().then(res => {
-      debouncedGetCurrentPlayingTrack();
-      setIsPlaying(true)
-    }).catch(err => {
-      console.log("Could not handle next track.")
-    }) 
+    spotifyApi
+      .skipToNext()
+      .then((res) => {
+        debouncedGetCurrentPlayingTrack();
+        setIsPlaying(true);
+      })
+      .catch((err) => {
+        console.log("Could not handle next track.");
+      });
   }
 
   function handlePreviousTrack() {
-    spotifyApi.skipToPrevious().then(res => {
-      debouncedGetCurrentPlayingTrack();
-      setIsPlaying(true)
-    }).catch(err => {
-      console.log("Could not handle previous track.")
-    }) 
+    spotifyApi
+      .skipToPrevious()
+      .then((res) => {
+        debouncedGetCurrentPlayingTrack();
+        setIsPlaying(true);
+      })
+      .catch((err) => {
+        console.log("Could not handle previous track.");
+      });
   }
 
   // Debounce setVolume API Call to prevent from excessively abusing api call.
   const debounceAdjustVolume = useCallback(
-    debounce((volume) => {  
+    debounce((volume) => {
       spotifyApi.setVolume(volume).catch((err) => {});
     }, parseInt(500)),
     []
@@ -108,8 +113,6 @@ function Player() {
       debounceAdjustVolume(volume);
     }
   }, [volume]);
-
-  
 
   return (
     <div className="grid grid-cols-3 text-xs md:text-base px-2 md:px-8 h-24 bg-gradient-to-b from-black to-gray-900 text-white">
@@ -132,28 +135,16 @@ function Player() {
         {/* Buttons */}
         <div className="flex items-center justify-center space-x-4 md:space-x-6 lg:space-x-8">
           <SwitchHorizontalIcon className="button" />
-          
-          <RewindIcon
-            onClick={handlePreviousTrack} 
-            className="button" 
-          />
+
+          <RewindIcon onClick={handlePreviousTrack} className="button" />
 
           {isPlaying ? (
-            <PauseIcon 
-              onClick={handlePlayPause} 
-              className="button w-10 h-10" 
-            />
+            <PauseIcon onClick={handlePlayPause} className="button w-10 h-10" />
           ) : (
-            <PlayIcon 
-              onClick={handlePlayPause} 
-              className="button w-10 h-10" 
-            />
+            <PlayIcon onClick={handlePlayPause} className="button w-10 h-10" />
           )}
 
-          <FastForwardIcon 
-            onClick={handleNextTrack} 
-            className="button" 
-          />
+          <FastForwardIcon onClick={handleNextTrack} className="button" />
 
           <ReplyIcon className="button" />
         </div>
