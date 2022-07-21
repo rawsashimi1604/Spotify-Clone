@@ -9,6 +9,8 @@ function TimeElapsedBar({ songInfo }) {
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [timeElapsed, setTimeElapsed] = useRecoilState(trackElapsedTimeState)
   
+  const songDuration = songInfo?.duration_ms;
+
   // TIMER to update time elapsed playing the song...
   useEffect(() => {
     if (currentTrackId && isPlaying) {
@@ -22,16 +24,20 @@ function TimeElapsedBar({ songInfo }) {
     }
   })
 
+  function getTimeElapsedPrc() {
+    return timeElapsed / songDuration * 100;
+  }
+
   return (
     <div className="flex space-x-2 justify-between items-center">
       <span className="text-gray-500 text-sm">{millisToMinutesAndSeconds(timeElapsed)}</span>
       <div className="w-full bg-gray-800 rounded-full h-1.5 dark:bg-gray-700">
         <div 
           className="bg-white h-1.5 rounded-full" 
-          style={{width: "45%"}}
+          style={{width: `${getTimeElapsedPrc()}%`}}
         />
       </div>
-      <span className="text-gray-500 text-sm">{millisToMinutesAndSeconds(songInfo?.duration_ms)}</span>
+      <span className="text-gray-500 text-sm">{millisToMinutesAndSeconds(songDuration)}</span>
     </div>
   )
 }
