@@ -124,7 +124,7 @@ function Player() {
       </div>
 
       {/* Center */}
-      <div className="flex items-center justify-evenly">
+      <div className="flex items-center justify-center space-x-4 md:space-x-6 lg:space-x-8">
         <SwitchHorizontalIcon className="button" />
         
         <RewindIcon
