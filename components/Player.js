@@ -70,10 +70,7 @@ function Player() {
   // Debounce get current playing track as some time is needed to update current playing track from Spotify's API server side
   const debouncedGetCurrentPlayingTrack = debounce(() => {
     spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-      console.log("ran")
-      const id = data.body?.item?.id;
-      console.log(id)
-      setCurrentTrackId(id);
+      setCurrentTrackId(data.body?.item?.id);
     })
   }, 500)
 
@@ -81,6 +78,7 @@ function Player() {
     spotifyApi.skipToNext().then(res => {
       console.log("skipped!")
       debouncedGetCurrentPlayingTrack();
+      setIsPlaying(true)
     }).catch(err => {
       console.log("Could not handle next track.")
     }) 
@@ -90,6 +88,7 @@ function Player() {
     spotifyApi.skipToPrevious().then(res => {
       console.log("skipped!")
       debouncedGetCurrentPlayingTrack();
+      setIsPlaying(true)
     }).catch(err => {
       console.log("Could not handle previous track.")
     }) 
