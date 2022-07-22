@@ -18,7 +18,7 @@ function useUpdateSongDuration(songDuration) {
   const [timeElapsedIteration, setTimeElapsedIteration] = useState(0);
 
   const TRACK_DURATION_REFRESH_COUNT = 5;
-  const UPDATE_UI_LOOKAHEAD_DURATION = 1000;
+  const UPDATE_UI_LOOKAHEAD_DURATION = 5000;
   const songDurationBuffer = songDuration % 1000;
 
    // Sync time elapsed locally or by using spotify's API call...
