@@ -18,6 +18,7 @@ function TimeElapsedBar({ songInfo }) {
   const [timeElapsed, setTimeElapsed] = useRecoilState(trackElapsedTimeState);
 
   const songDuration = songInfo?.duration_ms;
+  const songDurationBuffer = songDuration % 1000;
 
   // TIMER to update time elapsed playing the song...
   useEffect(() => {
@@ -29,9 +30,8 @@ function TimeElapsedBar({ songInfo }) {
     }
   });
 
-  // Reset track when track has finished playing.
   useEffect(() => {
-    if (timeElapsed >= (songDuration - 1000)) {
+    if (timeElapsed + songDurationBuffer >= songDuration - 1000) {
       setTimeElapsed(0);
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
         setCurrentTrackId(data.body?.item?.id);
