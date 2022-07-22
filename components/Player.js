@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useRecoilState } from "recoil";
-import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../atoms/songAtom";
 import { useSession } from "next-auth/react";
 import useSpotify from "../hooks/useSpotify";
 import useSongInfo from "../hooks/useSongInfo";
@@ -17,8 +17,6 @@ import {
   VolumeUpIcon,
 } from "@heroicons/react/solid";
 import { debounce } from "lodash";
-import { millisToMinutesAndSeconds } from "../lib/time";
-import { setInterval } from "timers";
 import TimeElapsedBar from "./TimeElapsedBar";
 
 function Player() {
@@ -30,6 +28,7 @@ function Player() {
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
+  const setTimeElapsed = useSetRecoilState(trackElapsedTimeState)
 
   const songInfo = useSongInfo();
 
@@ -64,6 +63,7 @@ function Player() {
         setIsPlaying(false);
       } else {
         spotifyApi.play();
+        setTimeElapsed(data.body.progress_ms);
         setIsPlaying(true);
       }
     });

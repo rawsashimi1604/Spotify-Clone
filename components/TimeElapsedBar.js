@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import useSpotify from "../hooks/useSpotify";
 import { useRecoilState } from "recoil";
 import {
   currentTrackIdState,
@@ -8,6 +9,9 @@ import {
 import { millisToMinutesAndSeconds } from "../lib/time";
 
 function TimeElapsedBar({ songInfo }) {
+
+  const spotifyApi = useSpotify();
+
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
@@ -19,18 +23,24 @@ function TimeElapsedBar({ songInfo }) {
   useEffect(() => {
     if (currentTrackId && isPlaying) {
       const interval = setInterval(() => {
-        // Spotify API rate limiting issues,
-        // spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-        //   setTimeElapsed(data.body?.progress_ms);
-        // })
-        setTimeElapsed((prevTime) => (prevTime += 1000));
+        setTimeElapsed(prevTime => prevTime += 1000);
       }, 1000);
       return () => clearInterval(interval);
     }
   });
 
+  // Reset track when track has finished playing.
+  useEffect(() => {
+    if (timeElapsed >= (songDuration - 1000)) {
+      setTimeElapsed(0);
+      spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+        setCurrentTrackId(data.body?.item?.id);
+      });
+    }
+  }, [timeElapsed])
+
   function getTimeElapsedPrc() {
-    return (timeElapsed / songDuration) * 100 || 1;
+    return Math.min((timeElapsed / songDuration) * 100, 100) || 1;
   }
 
   return (
