@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useSpotify from "../hooks/useSpotify";
-import { useRecoilState } from "recoil";
+import useUpdateSongDuration from "../hooks/useUpdateSongDuration"
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   currentTrackIdState,
   isPlayingState,
@@ -10,34 +11,12 @@ import { millisToMinutesAndSeconds } from "../lib/time";
 
 function TimeElapsedBar({ songInfo }) {
 
-  const spotifyApi = useSpotify();
-
-  const [currentTrackId, setCurrentTrackId] =
-    useRecoilState(currentTrackIdState);
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-  const [timeElapsed, setTimeElapsed] = useRecoilState(trackElapsedTimeState);
-
+  const timeElapsed = useRecoilValue(trackElapsedTimeState);
+  
   const songDuration = songInfo?.duration_ms;
-  const songDurationBuffer = songDuration % 1000;
-
-  // TIMER to update time elapsed playing the song...
-  useEffect(() => {
-    if (currentTrackId && isPlaying) {
-      const interval = setInterval(() => {
-        setTimeElapsed(prevTime => prevTime += 1000);
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  });
-
-  useEffect(() => {
-    if (timeElapsed + songDurationBuffer >= songDuration - 1000) {
-      setTimeElapsed(0);
-      spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-        setCurrentTrackId(data.body?.item?.id);
-      });
-    }
-  }, [timeElapsed])
+  
+  // Logic for updating song duration...
+  useUpdateSongDuration(songDuration);
 
   function getTimeElapsedPrc() {
     return Math.min((timeElapsed / songDuration) * 100, 100) || 1;
