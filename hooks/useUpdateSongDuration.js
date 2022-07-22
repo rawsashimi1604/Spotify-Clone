@@ -36,6 +36,7 @@ function useUpdateSongDuration(songDuration) {
         else {
           spotifyApi.getMyCurrentPlaybackState().then((data) => {
             setTimeElapsed(data.body?.progress_ms)
+            setCurrentTrackId(data.body?.item?.id)
           })
           setTimeElapsedIteration(0);
         }
