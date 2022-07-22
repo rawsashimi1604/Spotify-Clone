@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { ChevronDownIcon } from "@heroicons/react/outline";
+import { ChevronDownIcon, DotsCircleHorizontalIcon, DotsHorizontalIcon } from "@heroicons/react/outline";
 import { shuffle } from "lodash";
 
 import Songs from "../components/Songs";
@@ -23,6 +23,7 @@ function Center() {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
   const [color, setColor] = useState(null);
+  const [ownerDetails, setOwnerDetails] = useState(null);
   const playlistId = useRecoilValue(playlistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
 
@@ -40,6 +41,20 @@ function Center() {
       .catch((err) => console.log("Something went wrong!", err));
   }, [spotifyApi, playlistId]);
 
+  useEffect(() => {
+    const ownerId = playlist?.owner?.id;
+    spotifyApi.getUser(ownerId).then((data) => {
+      setOwnerDetails(prevOwnerDetails => {
+        return {
+          img: data.body?.images?.[0]?.url,
+          name: data.body?.display_name,
+        }
+      })
+    })
+  }, [playlist])
+
+  console.log(playlist)
+  
   return (
     <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide">
       <header className="absolute top-5 right-8" onClick={signOut}>
@@ -66,9 +81,23 @@ function Center() {
 
         <div>
           <p>PLAYLIST</p>
-          <h1 className="font-bold text-2xl md:text-3xl xl:text-5xl">
+          <h1 className="font-bold text-2xl md:text-3xl xl:text-5xl mb-2">
             {playlist?.name}
           </h1>
+          <h2 className="text-gray-300 text-sm md:text-base xl:text-lg mb-2">
+            {playlist?.description}
+          </h2>
+          <div className="text-white flex items-center space-x-2">
+            {
+              ownerDetails?.img &&
+              <img className="rounded-full w-5 h-5" src={ownerDetails?.img}/>
+            }
+            <span className="font-semibold">{ownerDetails?.name}</span>
+            <div className="h-1 w-1 bg-white rounded-full"/>
+            <span>{playlist?.followers?.total} likes</span>
+            <div className="h-1 w-1 bg-white rounded-full"/>
+            <span>{playlist?.tracks?.items?.length} songs</span>
+          </div>
         </div>
       </section>
 
