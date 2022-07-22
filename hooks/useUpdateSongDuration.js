@@ -47,7 +47,7 @@ function useUpdateSongDuration(songDuration) {
 
   // If current track has finished, update UI using spotify API...
   useEffect(() => {
-    if (timeElapsed + songDurationBuffer >= songDuration - 1000) {
+    if (timeElapsed + songDurationBuffer >= songDuration + UPDATE_UI_LOOKAHEAD_DURATION) {
       setTimeElapsed(0);
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
         setCurrentTrackId(data.body?.item?.id);
