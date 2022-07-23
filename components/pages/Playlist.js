@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
-import { ChevronDownIcon, } from "@heroicons/react/outline";
 import { shuffle } from "lodash";
 
 import Songs from "../elements/Songs";
@@ -21,7 +19,6 @@ const colors = [
 
 function Playlist() {
   const spotifyApi = useSpotify();
-  const { data: session } = useSession();
   const [color, setColor] = useState(null);
   const [ownerDetails, setOwnerDetails] = useState(null);
   const playlistId = useRecoilValue(playlistIdState);
@@ -45,12 +42,12 @@ function Playlist() {
     const ownerId = playlist?.owner?.id;
     spotifyApi.getUser(ownerId).then((data) => {
       setOwnerDetails({
-          img: data.body?.images?.[0]?.url,
-          name: data.body?.display_name,
-        })
-    })
-  }, [playlist])
-  
+        img: data.body?.images?.[0]?.url,
+        name: data.body?.display_name,
+      });
+    });
+  }, [playlist]);
+
   return (
     <>
       {/* ALBUM ART and NAME */}
@@ -72,14 +69,13 @@ function Playlist() {
             {playlist?.description}
           </h2>
           <div className="text-white flex items-center space-x-2">
-            {
-              ownerDetails?.img &&
-              <img className="rounded-full w-5 h-5" src={ownerDetails?.img}/>
-            }
+            {ownerDetails?.img && (
+              <img className="rounded-full w-5 h-5" src={ownerDetails?.img} />
+            )}
             <span className="font-semibold">{ownerDetails?.name}</span>
-            <div className="h-1 w-1 bg-white rounded-full"/>
+            <div className="h-1 w-1 bg-white rounded-full" />
             <span>{playlist?.followers?.total} likes</span>
-            <div className="h-1 w-1 bg-white rounded-full"/>
+            <div className="h-1 w-1 bg-white rounded-full" />
             <span>{playlist?.tracks?.items?.length} songs</span>
           </div>
         </div>
@@ -93,4 +89,4 @@ function Playlist() {
   );
 }
 
-export default Playlist
+export default Playlist;

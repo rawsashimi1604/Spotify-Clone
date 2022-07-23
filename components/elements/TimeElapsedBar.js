@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useSpotify from "../../hooks/useSpotify";
-import useUpdateSongDuration from "../../hooks/useUpdateSongDuration"
+import useUpdateSongDuration from "../../hooks/useUpdateSongDuration";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   currentTrackIdState,
@@ -10,11 +10,10 @@ import {
 import { millisToMinutesAndSeconds } from "../../lib/time";
 
 function TimeElapsedBar({ songInfo }) {
-
   const timeElapsed = useRecoilValue(trackElapsedTimeState);
-  
+
   const songDuration = songInfo?.duration_ms;
-  
+
   // Logic for updating song duration...
   useUpdateSongDuration(songDuration);
 
@@ -34,7 +33,7 @@ function TimeElapsedBar({ songInfo }) {
         />
       </div>
       <span className="text-gray-500 text-sm">
-        {millisToMinutesAndSeconds(songDuration)}
+        {millisToMinutesAndSeconds(songDuration) || "0:00"}
       </span>
     </div>
   );

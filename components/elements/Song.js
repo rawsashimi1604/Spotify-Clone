@@ -3,7 +3,12 @@ import useSpotify from "../../hooks/useSpotify";
 import { millisToMinutesAndSeconds } from "../../lib/time";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { playlistState } from "../../atoms/playlistAtom";
-import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../../atoms/songAtom";
+import {
+  currentTrackIdState,
+  isPlayingState,
+  trackElapsedTimeState,
+} from "../../atoms/songAtom";
+import { menuOptionState } from "../../atoms/appAtom";
 
 // Song in a playlist...
 function Song({ order, track }) {
@@ -11,6 +16,8 @@ function Song({ order, track }) {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
+  const [selectedMenuOption, setSelectedMenuOption] =
+    useRecoilState(menuOptionState);
   const setTimeElapsed = useSetRecoilState(trackElapsedTimeState);
   const playlist = useRecoilValue(playlistState);
 

@@ -4,9 +4,7 @@ import Center from "../components/layouts/Center";
 import Sidebar from "../components/layouts/Sidebar";
 import Player from "../components/layouts/Player";
 
-
 export default function Home() {
-
   return (
     <>
       <div className="bg-black h-screen overflow-hidden">

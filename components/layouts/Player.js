@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../../atoms/songAtom";
+import {
+  currentTrackIdState,
+  isPlayingState,
+  trackElapsedTimeState,
+} from "../../atoms/songAtom";
 import { useSession } from "next-auth/react";
 import useSpotify from "../../hooks/useSpotify";
 import useSongInfo from "../../hooks/useSongInfo";
@@ -28,7 +32,7 @@ function Player() {
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
-  const setTimeElapsed = useSetRecoilState(trackElapsedTimeState)
+  const setTimeElapsed = useSetRecoilState(trackElapsedTimeState);
 
   const songInfo = useSongInfo();
 
