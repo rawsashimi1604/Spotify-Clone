@@ -25,6 +25,7 @@ function Song({ order, track, uriType }) {
   const playlist = useRecoilValue(playlistState);
 
   function playSong() {
+    console.log("SONG WAS PLAYED")
     setCurrentTrackId(track.track.id);
     setCurrentTrackUri(uriType);
     setIsPlaying(true);
@@ -40,12 +41,14 @@ function Song({ order, track, uriType }) {
           },
           position_ms: 0,
         });
+        break;
       }
       case TRACK: {
         console.log("TRACK TYPE SONG PLAY")
         spotifyApi.play({
           uris: [track.track.uri],
         })
+        break;
       }
     }
     
