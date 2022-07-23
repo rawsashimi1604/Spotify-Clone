@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { HOME } from "../lib/menu";
+import {HOME,SEARCH,YOUR_LIBRARY,CREATE_PLAYLIST, YOUR_EPISODES, LIKED_SONGS, PLAYLIST} from "../lib/menu";
 
-export const selectedComponentState = atom({
-  key: "selectedComponentState",
-  default: HOME,
+export const menuOptionState = atom({
+  key: "menuOptionState",
+  default: LIKED_SONGS,
 });

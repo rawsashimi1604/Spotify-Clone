@@ -52,7 +52,7 @@ function Playlist() {
   }, [playlist])
   
   return (
-    <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide">
+    <>
       <header className="absolute top-5 right-8" onClick={signOut}>
         <div className="flex items-center bg-black text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2">
           <img
@@ -101,7 +101,7 @@ function Playlist() {
       <section>
         <Songs />
       </section>
-    </div>
+    </>
   );
 }
 

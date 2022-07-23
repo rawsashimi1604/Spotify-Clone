@@ -13,12 +13,16 @@ import useSpotify from "../hooks/useSpotify";
 
 import { useRecoilState } from "recoil";
 import { playlistIdState } from "../atoms/playlistAtom";
+import { menuOptionState } from "../atoms/appAtom"
+
+import {HOME,SEARCH,YOUR_LIBRARY,CREATE_PLAYLIST, YOUR_EPISODES, LIKED_SONGS, PLAYLIST} from "../lib/menu";
 
 function Sidebar() {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
   const [playlists, setPlaylists] = useState([]);
   const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
+  const [selectedMenuOption, setSelectedMenuOption] = useRecoilState(menuOptionState);
 
   useEffect(() => {
     // If our API has an access token...
@@ -51,7 +55,10 @@ function Sidebar() {
           <PlusCircleIcon className="h-5 w-5" />
           <p>Create Playlist</p>
         </button>
-        <button className="flex items-center space-x-2 hover:text-white">
+        <button 
+          className={`flex items-center space-x-2 hover:text-white ${selectedMenuOption === LIKED_SONGS && "text-white"}`}
+          onClick={() => setSelectedMenuOption(LIKED_SONGS)}  
+        >
           <HeartIcon className="h-5 w-5 text-blue-500" />
           <p>Liked Songs</p>
         </button>
@@ -66,8 +73,11 @@ function Sidebar() {
         {playlists.map((playlist) => (
           <p
             key={playlist.id}
-            className={`cursor-pointer hover:text-white truncate ${playlist.id === playlistId && "text-white"}`}
-            onClick={() => setPlaylistId(playlist.id)}
+            className={`cursor-pointer hover:text-white truncate ${selectedMenuOption === PLAYLIST && playlist.id === playlistId && "text-white"}`}
+            onClick={() => {
+              setSelectedMenuOption(PLAYLIST);
+              setPlaylistId(playlist.id);
+            }}
           >
             {playlist.name}
           </p>
