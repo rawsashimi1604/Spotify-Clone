@@ -3,6 +3,7 @@ import Image from "next/image";
 import useSpotify from "../../hooks/useSpotify";
 import { useSession } from "next-auth/react";
 import Song from "../elements/Song";
+import { TRACK } from "../../lib/constants/uriTypes"
 
 function LikedSongs() {
   const spotifyApi = useSpotify();
@@ -61,7 +62,7 @@ function LikedSongs() {
 
       <section>
         {userLikedSongs.map((track, i) => (
-          <Song key={track.track.id} track={track} order={i} />
+          <Song key={track.track.id} track={track} order={i} uriType={TRACK} />
         ))}
       </section>
     </div>

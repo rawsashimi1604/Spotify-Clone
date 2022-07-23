@@ -7,14 +7,17 @@ import {
   currentTrackIdState,
   isPlayingState,
   trackElapsedTimeState,
+  currentTrackUriState,
 } from "../../atoms/songAtom";
 import { menuOptionState } from "../../atoms/appAtom";
+import { PLAYLIST, TRACK, ALBUM } from "../../lib/constants/uriTypes";
 
 // Song in a playlist...
-function Song({ order, track }) {
+function Song({ order, track, uriType }) {
   const spotifyApi = useSpotify();
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
+  const [currentTrackUri, setCurrentTrackUri] = useRecoilState(currentTrackUriState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [selectedMenuOption, setSelectedMenuOption] =
     useRecoilState(menuOptionState);
@@ -23,21 +26,35 @@ function Song({ order, track }) {
 
   function playSong() {
     setCurrentTrackId(track.track.id);
+    setCurrentTrackUri(uriType);
     setIsPlaying(true);
     setTimeElapsed(0);
-    spotifyApi.play({
-      context_uri: playlist.uri,
-      offset: {
-        position: order,
-      },
-      position_ms: 0,
-    });
+
+    switch(uriType) {
+      case PLAYLIST: {
+        console.log("PLAYLIST TYPE SONG PLAY")
+        spotifyApi.play({
+          context_uri: playlist.uri,
+          offset: {
+            position: order,
+          },
+          position_ms: 0,
+        });
+      }
+      case TRACK: {
+        console.log("TRACK TYPE SONG PLAY")
+        spotifyApi.play({
+          uris: [track.track.uri],
+        })
+      }
+    }
+    
   }
 
   return (
     <div
       className="grid grid-cols-2 text-gray-500 py-4 px-5 duration-100 ease-in hover:bg-gray-900 rounded-lg cursor-pointer"
-      onClick={playSong}
+      onClick={() => playSong()}
     >
       <div className="flex items-center space-x-4 ">
         <p className="w-4 min-w-4 text-right">{order + 1}</p>

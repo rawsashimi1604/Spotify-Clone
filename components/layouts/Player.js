@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import {
   currentTrackIdState,
   isPlayingState,
   trackElapsedTimeState,
+  currentTrackUriState,
 } from "../../atoms/songAtom";
+import { menuOptionState } from "../../atoms/appAtom";
 import { useSession } from "next-auth/react";
 import useSpotify from "../../hooks/useSpotify";
 import useSongInfo from "../../hooks/useSongInfo";
@@ -22,6 +24,7 @@ import {
 } from "@heroicons/react/solid";
 import { debounce } from "lodash";
 import TimeElapsedBar from "../elements/TimeElapsedBar";
+import { PLAYLIST, TRACK, ALBUM } from "../../lib/constants/uriTypes"
 
 function Player() {
   const DEFAULT_VOLUME = 50;
@@ -33,6 +36,8 @@ function Player() {
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
   const setTimeElapsed = useSetRecoilState(trackElapsedTimeState);
+  const selectedMenuOption = useRecoilValue(menuOptionState);
+  const currentTrackUri = useRecoilValue(currentTrackUriState);
 
   const songInfo = useSongInfo();
 
@@ -79,7 +84,8 @@ function Player() {
   }, 500);
 
   function handleNextTrack() {
-    spotifyApi
+    if (currentTrackUri === PLAYLIST) {
+      spotifyApi
       .skipToNext()
       .then((res) => {
         debouncedGetCurrentPlayingTrack();
@@ -88,10 +94,13 @@ function Player() {
       .catch((err) => {
         console.log("Could not handle next track.");
       });
+    }
+    
   }
 
   function handlePreviousTrack() {
-    spotifyApi
+    if (currentTrackUri === PLAYLIST) {
+      spotifyApi
       .skipToPrevious()
       .then((res) => {
         debouncedGetCurrentPlayingTrack();
@@ -100,6 +109,7 @@ function Player() {
       .catch((err) => {
         console.log("Could not handle previous track.");
       });
+    }
   }
 
   // Debounce setVolume API Call to prevent from excessively abusing api call.
@@ -135,10 +145,12 @@ function Player() {
       {/* Center */}
       <div className="flex flex-col space-y-2 justify-center">
         {/* Buttons */}
-        <div className="flex items-center justify-between md:justify-center md:space-x-4 md:space-x-6 lg:space-x-8">
+        <div className="flex items-center justify-between md:justify-center md:space-x-6 lg:space-x-8">
           {/* <SwitchHorizontalIcon className="button" /> */}
 
-          <RewindIcon onClick={handlePreviousTrack} className="button" />
+          <button onClick={handlePreviousTrack} className="button disabled:opacity-70 disabled:pointer-events-none" disabled={currentTrackUri !== PLAYLIST}>
+            <RewindIcon  />
+          </button>
 
           {isPlaying ? (
             <PauseIcon onClick={handlePlayPause} className="button w-10 h-10" />
@@ -146,7 +158,9 @@ function Player() {
             <PlayIcon onClick={handlePlayPause} className="button w-10 h-10" />
           )}
 
-          <FastForwardIcon onClick={handleNextTrack} className="button" />
+          <button onClick={handleNextTrack} className="button disabled:text-gray-500 disabled:pointer-events-none" disabled={currentTrackUri !== PLAYLIST}>
+            <FastForwardIcon />
+          </button>
 
           {/* <ReplyIcon className="button" /> */}
         </div>
