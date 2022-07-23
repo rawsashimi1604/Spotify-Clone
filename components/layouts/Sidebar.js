@@ -49,11 +49,10 @@ function Sidebar() {
       <div className="space-y-4 w-full">
         <div className="flex justify-center">
           <img 
-            src="/images/logo.png"
-            className="w-52 h-12"
+            src="/images/spotify.svg"
           />
         </div>
-
+ 
 
         <button className="flex items-center space-x-2 hover:text-white">
           <HomeIcon className="h-5 w-5" />
