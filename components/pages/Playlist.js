@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { shuffle } from "lodash";
-
+import parse from "html-react-parser";
 import Songs from "../elements/Songs";
-
 import useSpotify from "../../hooks/useSpotify";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { playlistState, playlistIdState } from "../../atoms/playlistAtom";
@@ -65,14 +64,14 @@ function Playlist() {
           <h1 className="font-bold text-2xl md:text-3xl xl:text-5xl mb-2">
             {playlist?.name}
           </h1>
-          <h2 className="text-gray-300 text-sm md:text-base xl:text-lg mb-2">
-            {playlist?.description}
+          <h2 className="text-gray- 300 text-sm md:text-base xl:text-lg mb-2">
+            {playlist && parse(playlist?.description)}
           </h2>
           <div className="text-white flex items-center space-x-2">
             {ownerDetails?.img && (
               <img className="rounded-full w-5 h-5" src={ownerDetails?.img} />
             )}
-            <span className="font-semibold">{ownerDetails?.name}</span>
+            <span className="font-semibold parsedHtml">{ownerDetails?.name}</span>
             <div className="h-1 w-1 bg-white rounded-full" />
             <span>{playlist?.followers?.total} likes</span>
             <div className="h-1 w-1 bg-white rounded-full" />
