@@ -8,6 +8,7 @@ import {
 import { HeartIcon } from "@heroicons/react/solid";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import useSpotify from "../../hooks/useSpotify";
 
@@ -43,8 +44,17 @@ function Sidebar() {
   }, [session, spotifyApi]);
 
   return (
-    <div className="grow-0 flex-shrink-0 overflow-y-scroll text-gray-500 p-5 text-xs lg:text-sm border-r border-gray-900 h-screen scrollbar-hide sm:w-52 lg:w-72 hidden sm:inline-flex pb-52">
-      <div className="space-y-4">
+    <aside className="grow-0 flex-shrink-0 overflow-y-scroll text-gray-500 p-5 text-xs lg:text-sm border-r border-gray-900 h-screen scrollbar-hide sm:w-52 lg:w-72 hidden sm:inline-flex pb-52">
+
+      <div className="space-y-4 w-full">
+        <div className="flex justify-center">
+          <img 
+            src="/images/logo.png"
+            className="w-52 h-12"
+          />
+        </div>
+
+
         <button className="flex items-center space-x-2 hover:text-white">
           <HomeIcon className="h-5 w-5" />
           <p>Home</p>
@@ -98,7 +108,7 @@ function Sidebar() {
           </p>
         ))}
       </div>
-    </div>
+    </aside>
   );
 }
 
