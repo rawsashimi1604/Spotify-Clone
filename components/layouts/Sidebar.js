@@ -9,13 +9,13 @@ import { HeartIcon } from "@heroicons/react/solid";
 
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import useSpotify from "../hooks/useSpotify";
+import useSpotify from "../../hooks/useSpotify";
 
 import { useRecoilState } from "recoil";
-import { playlistIdState } from "../atoms/playlistAtom";
-import { menuOptionState } from "../atoms/appAtom"
+import { playlistIdState } from "../../atoms/playlistAtom";
+import { menuOptionState } from "../../atoms/appAtom"
 
-import {HOME,SEARCH,YOUR_LIBRARY,CREATE_PLAYLIST, YOUR_EPISODES, LIKED_SONGS, PLAYLIST} from "../lib/menu";
+import {HOME,SEARCH,YOUR_LIBRARY,CREATE_PLAYLIST, YOUR_EPISODES, LIKED_SONGS, PLAYLIST} from "../../lib/menu";
 
 function Sidebar() {
   const spotifyApi = useSpotify();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { playlistState } from "../atoms/playlistAtom";
+import { playlistState } from "../../atoms/playlistAtom";
 
 import Song from "./Song";
 

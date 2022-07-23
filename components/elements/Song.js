@@ -1,9 +1,9 @@
 import React from "react";
-import useSpotify from "../hooks/useSpotify";
-import { millisToMinutesAndSeconds } from "../lib/time";
+import useSpotify from "../../hooks/useSpotify";
+import { millisToMinutesAndSeconds } from "../../lib/time";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { playlistState } from "../atoms/playlistAtom";
-import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../atoms/songAtom";
+import { playlistState } from "../../atoms/playlistAtom";
+import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../../atoms/songAtom";
 
 // Song in a playlist...
 function Song({ order, track }) {

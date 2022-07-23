@@ -1,8 +1,8 @@
 import Script from "next/script";
 import { getSession } from "next-auth/react";
-import Center from "../components/Center";
-import Sidebar from "../components/Sidebar";
-import Player from "../components/Player";
+import Center from "../components/layouts/Center";
+import Sidebar from "../components/layouts/Sidebar";
+import Player from "../components/layouts/Player";
 
 
 export default function Home() {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../atoms/songAtom";
+import { currentTrackIdState, isPlayingState, trackElapsedTimeState } from "../../atoms/songAtom";
 import { useSession } from "next-auth/react";
-import useSpotify from "../hooks/useSpotify";
-import useSongInfo from "../hooks/useSongInfo";
+import useSpotify from "../../hooks/useSpotify";
+import useSongInfo from "../../hooks/useSongInfo";
 import {
   ReplyIcon,
   SwitchHorizontalIcon,
@@ -17,7 +17,7 @@ import {
   VolumeUpIcon,
 } from "@heroicons/react/solid";
 import { debounce } from "lodash";
-import TimeElapsedBar from "./TimeElapsedBar";
+import TimeElapsedBar from "../elements/TimeElapsedBar";
 
 function Player() {
   const DEFAULT_VOLUME = 50;

@@ -3,11 +3,11 @@ import { useSession, signOut } from "next-auth/react";
 import { ChevronDownIcon, } from "@heroicons/react/outline";
 import { shuffle } from "lodash";
 
-import Songs from "../components/Songs";
+import Songs from "../elements/Songs";
 
-import useSpotify from "../hooks/useSpotify";
+import useSpotify from "../../hooks/useSpotify";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { playlistState, playlistIdState } from "../atoms/playlistAtom";
+import { playlistState, playlistIdState } from "../../atoms/playlistAtom";
 
 const colors = [
   "from-indigo-500",

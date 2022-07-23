@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import useSpotify from "../hooks/useSpotify";
-import useUpdateSongDuration from "../hooks/useUpdateSongDuration"
+import useSpotify from "../../hooks/useSpotify";
+import useUpdateSongDuration from "../../hooks/useUpdateSongDuration"
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   currentTrackIdState,
   isPlayingState,
   trackElapsedTimeState,
-} from "../atoms/songAtom";
-import { millisToMinutesAndSeconds } from "../lib/time";
+} from "../../atoms/songAtom";
+import { millisToMinutesAndSeconds } from "../../lib/time";
 
 function TimeElapsedBar({ songInfo }) {
 
