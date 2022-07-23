@@ -59,10 +59,15 @@ function LikedSongs() {
         </div>
       </section>
 
-      <section >
+      <section>
         <div className="px-8 flex flex-col space-y-1 pb-28 text-white">
           {userLikedSongs.map((track, i) => (
-            <Song key={track.track.id} track={track} order={i} uriType={TRACK} />
+            <Song
+              key={track.track.id}
+              track={track}
+              order={i}
+              uriType={TRACK}
+            />
           ))}
         </div>
       </section>

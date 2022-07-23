@@ -71,7 +71,9 @@ function Playlist() {
             {ownerDetails?.img && (
               <img className="rounded-full w-5 h-5" src={ownerDetails?.img} />
             )}
-            <span className="font-semibold parsedHtml">{ownerDetails?.name}</span>
+            <span className="font-semibold parsedHtml">
+              {ownerDetails?.name}
+            </span>
             <div className="h-1 w-1 bg-white rounded-full" />
             <span>{playlist?.followers?.total} likes</span>
             <div className="h-1 w-1 bg-white rounded-full" />
