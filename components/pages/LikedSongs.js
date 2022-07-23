@@ -3,7 +3,7 @@ import Image from "next/image";
 import useSpotify from "../../hooks/useSpotify";
 import { useSession } from "next-auth/react";
 import Song from "../elements/Song";
-import { TRACK } from "../../lib/constants/uriTypes"
+import { TRACK } from "../../lib/constants/uriTypes";
 
 function LikedSongs() {
   const spotifyApi = useSpotify();
@@ -17,7 +17,6 @@ function LikedSongs() {
         limit: 50,
       })
       .then((data) => {
-        console.log(data);
         setUserLikedSongs(data.body?.items);
       })
       .catch((err) => {});

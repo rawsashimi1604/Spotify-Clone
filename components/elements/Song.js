@@ -17,7 +17,8 @@ function Song({ order, track, uriType }) {
   const spotifyApi = useSpotify();
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
-  const [currentTrackUri, setCurrentTrackUri] = useRecoilState(currentTrackUriState);
+  const [currentTrackUri, setCurrentTrackUri] =
+    useRecoilState(currentTrackUriState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [selectedMenuOption, setSelectedMenuOption] =
     useRecoilState(menuOptionState);
@@ -25,15 +26,13 @@ function Song({ order, track, uriType }) {
   const playlist = useRecoilValue(playlistState);
 
   function playSong() {
-    console.log("SONG WAS PLAYED")
     setCurrentTrackId(track.track.id);
     setCurrentTrackUri(uriType);
     setIsPlaying(true);
     setTimeElapsed(0);
 
-    switch(uriType) {
+    switch (uriType) {
       case PLAYLIST: {
-        console.log("PLAYLIST TYPE SONG PLAY")
         spotifyApi.play({
           context_uri: playlist.uri,
           offset: {
@@ -44,14 +43,12 @@ function Song({ order, track, uriType }) {
         break;
       }
       case TRACK: {
-        console.log("TRACK TYPE SONG PLAY")
         spotifyApi.play({
           uris: [track.track.uri],
-        })
+        });
         break;
       }
     }
-    
   }
 
   return (

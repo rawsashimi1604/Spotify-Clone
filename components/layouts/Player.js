@@ -24,7 +24,7 @@ import {
 } from "@heroicons/react/solid";
 import { debounce } from "lodash";
 import TimeElapsedBar from "../elements/TimeElapsedBar";
-import { PLAYLIST, TRACK, ALBUM } from "../../lib/constants/uriTypes"
+import { PLAYLIST, TRACK, ALBUM } from "../../lib/constants/uriTypes";
 
 function Player() {
   const DEFAULT_VOLUME = 50;
@@ -86,29 +86,28 @@ function Player() {
   function handleNextTrack() {
     if (currentTrackUri === PLAYLIST) {
       spotifyApi
-      .skipToNext()
-      .then((res) => {
-        debouncedGetCurrentPlayingTrack();
-        setIsPlaying(true);
-      })
-      .catch((err) => {
-        console.log("Could not handle next track.");
-      });
+        .skipToNext()
+        .then((res) => {
+          debouncedGetCurrentPlayingTrack();
+          setIsPlaying(true);
+        })
+        .catch((err) => {
+          console.log("Could not handle next track.");
+        });
     }
-    
   }
 
   function handlePreviousTrack() {
     if (currentTrackUri === PLAYLIST) {
       spotifyApi
-      .skipToPrevious()
-      .then((res) => {
-        debouncedGetCurrentPlayingTrack();
-        setIsPlaying(true);
-      })
-      .catch((err) => {
-        console.log("Could not handle previous track.");
-      });
+        .skipToPrevious()
+        .then((res) => {
+          debouncedGetCurrentPlayingTrack();
+          setIsPlaying(true);
+        })
+        .catch((err) => {
+          console.log("Could not handle previous track.");
+        });
     }
   }
 
@@ -148,8 +147,12 @@ function Player() {
         <div className="flex items-center justify-between md:justify-center md:space-x-6 lg:space-x-8">
           {/* <SwitchHorizontalIcon className="button" /> */}
 
-          <button onClick={handlePreviousTrack} className="button disabled:opacity-70 disabled:pointer-events-none" disabled={currentTrackUri !== PLAYLIST}>
-            <RewindIcon  />
+          <button
+            onClick={handlePreviousTrack}
+            className="button disabled:opacity-70 disabled:pointer-events-none"
+            disabled={currentTrackUri !== PLAYLIST}
+          >
+            <RewindIcon />
           </button>
 
           {isPlaying ? (
@@ -158,7 +161,11 @@ function Player() {
             <PlayIcon onClick={handlePlayPause} className="button w-10 h-10" />
           )}
 
-          <button onClick={handleNextTrack} className="button disabled:text-gray-500 disabled:pointer-events-none" disabled={currentTrackUri !== PLAYLIST}>
+          <button
+            onClick={handleNextTrack}
+            className="button disabled:text-gray-500 disabled:pointer-events-none"
+            disabled={currentTrackUri !== PLAYLIST}
+          >
             <FastForwardIcon />
           </button>
 

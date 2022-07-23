@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { playlistState } from "../../atoms/playlistAtom";
 
 import Song from "./Song";
-import { PLAYLIST } from "../../lib/constants/uriTypes"
+import { PLAYLIST } from "../../lib/constants/uriTypes";
 
 function Songs() {
   const playlist = useRecoilValue(playlistState);
