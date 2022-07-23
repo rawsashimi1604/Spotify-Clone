@@ -3,6 +3,7 @@ import {HOME,SEARCH,YOUR_LIBRARY,CREATE_PLAYLIST, YOUR_EPISODES, LIKED_SONGS, PL
 import { useRecoilState } from "recoil";
 import { menuOptionState } from "../../atoms/appAtom";
 
+import Header from "../elements/Header";
 import LikedSongs from "../pages/LikedSongs";
 import Playlist from "../pages/Playlist";
 
@@ -20,6 +21,8 @@ function Center() {
 
   return (
     <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide">
+
+      <Header />
       {renderSelectedMenuOption()}
     </div>
   );
