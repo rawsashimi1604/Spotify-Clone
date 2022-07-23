@@ -23,7 +23,6 @@ function Sidebar() {
   useEffect(() => {
     // If our API has an access token...
     if (spotifyApi.getAccessToken()) {
-      console.log("Have access token...");
       spotifyApi.getUserPlaylists().then((data) => {
         setPlaylists(data.body.items);
       });
